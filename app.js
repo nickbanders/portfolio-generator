@@ -1,4 +1,6 @@
 const inquirer = require('inquirer');
+const fs = require('fs');
+const generatePage = require('./src/page_template');
 
 const promptUser = () => {
     return inquirer.prompt([
@@ -125,11 +127,24 @@ const promptUser = () => {
   };
 
   promptUser()
-  .then(answers => console.log(answers))
   .then(promptProject)
-  .then(projectAnswers => console.log(projectAnswers));
-// const fs = require('fs');
-// const generatePage = require('./src/page_template');
+  .then(portfolioData => {
+    const pageHTML = generatePage(portfolioData);
+
+    fs.writeFile('./index.html', pageHTML, err => {
+      if (err) throw new Error(err);
+
+      console.log('Page created! Check out index.html in this directory to see it!');
+    });
+  });
+  
+  
+  
+//   promptUser()
+//   .then(answers => console.log(answers))
+//   .then(promptProject)
+//   .then(projectAnswers => console.log(projectAnswers));
+
 
 // const pageHTML = generatePage(name, github);
 
